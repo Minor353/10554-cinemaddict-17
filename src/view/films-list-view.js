@@ -1,6 +1,6 @@
 import {createElement} from '../render.js';
 
-const createFilmsListTemplate = (listTitle, classListModificator = ' ', classTitleModificator = ' ') => (
+const createFilmsListTemplate = (listTitle, classListModificator = '', classTitleModificator = '') => (
   `
   <section class="films-list ${classListModificator}">
       <h2 class="films-list__title ${classTitleModificator}">${listTitle}</h2>
@@ -9,13 +9,14 @@ const createFilmsListTemplate = (listTitle, classListModificator = ' ', classTit
 );
 
 export default class FilmsListView {
-  constructor(listTitle, classModificator) {
+  constructor(listTitle, classListModificator, classTitleModificator) {
     this.listTitle = listTitle;
-    this.classModificator = classModificator;
+    this.classListModificator = classListModificator;
+    this.classTitleModificator = classTitleModificator;
   }
 
   getTemplate() {
-    return createFilmsListTemplate(this.listTitle, this.classModificator);
+    return createFilmsListTemplate(this.listTitle, this.classListModificator, this.classTitleModificator);
   }
 
   getElement() {
