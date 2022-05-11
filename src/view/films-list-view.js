@@ -9,25 +9,31 @@ const createFilmsListTemplate = (listTitle, classListModificator = '', classTitl
 );
 
 export default class FilmsListView {
+  #element = null;
+  #listTitle = null;
+  #classListModificator = null;
+  #classTitleModificator = null;
+
+
   constructor(listTitle, classListModificator, classTitleModificator) {
-    this.listTitle = listTitle;
-    this.classListModificator = classListModificator;
-    this.classTitleModificator = classTitleModificator;
+    this.#listTitle = listTitle;
+    this.#classListModificator = classListModificator;
+    this.#classTitleModificator = classTitleModificator;
   }
 
-  getTemplate() {
-    return createFilmsListTemplate(this.listTitle, this.classListModificator, this.classTitleModificator);
+  get template() {
+    return createFilmsListTemplate(this.#listTitle, this.#classListModificator, this.#classTitleModificator);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
