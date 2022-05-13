@@ -108,7 +108,7 @@ const createFilmDetailsTemplate = (film, comments) => {
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">5</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film.comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
           ${commentTemplate}
@@ -152,24 +152,28 @@ const createFilmDetailsTemplate = (film, comments) => {
   );};
 
 export default class FilmDetailsView {
+  #element = null;
+  #film = null;
+  #comments = null;
+
   constructor(film, comments) {
-    this.film = film;
-    this.comments = comments;
+    this.#film = film;
+    this.#comments = comments;
   }
 
-  getTemplate() {
-    return createFilmDetailsTemplate(this.film, this.comments);
+  get template() {
+    return createFilmDetailsTemplate(this.#film, this.#comments);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

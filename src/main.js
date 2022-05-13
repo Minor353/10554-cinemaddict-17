@@ -4,16 +4,13 @@ import NumberOfFilmsView from './view/number-of-films-view.js';
 import MainNavigationView from './view/main-navigation-view.js';
 import SortFilmsView from './view/sort-films-view.js';
 import FilmsPresenter from './presenter/films-presenter.js';
-import FilmDetailsPresenter from './presenter/film-details-presenter.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
 
 const siteHeaderElement = document.querySelector('.header');
 const siteFooterStatisticsElement = document.querySelector('.footer__statistics');
 const siteMainElement = document.querySelector('.main');
-const siteBodyElement = document.querySelector('body');
 const filmsPresenter = new FilmsPresenter();
-const filmDetailsPresenter = new FilmDetailsPresenter();
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
 
@@ -22,5 +19,4 @@ render(new MainNavigationView(), siteMainElement);
 render(new SortFilmsView(), siteMainElement);
 render(new NumberOfFilmsView(), siteFooterStatisticsElement);
 
-filmsPresenter.init(siteMainElement, filmsModel);
-filmDetailsPresenter.init(siteBodyElement, filmsModel, commentsModel);
+filmsPresenter.init(siteMainElement, filmsModel, commentsModel);

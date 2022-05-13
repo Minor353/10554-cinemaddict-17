@@ -14,13 +14,20 @@ const humanizeYear = (date) => dayjs(date).format('YYYY');
 const humanizeCommentDay = (date) => dayjs(date).format('YYYY/MM/DD HH:mm');
 
 const transformIntToHour = (minutes) => {
-  const h = Math.floor(minutes / 60);
-  const m = Math.floor(minutes % 60);
+  const hoursItem = Math.floor(minutes / 60);
+  const minutesItem = Math.floor(minutes % 60);
 
-  const hDisplay = h > 0 ? `${h} h ` : '';
-  const mDisplay = m > 0 ? `${m} m ` : '';
-  return hDisplay + mDisplay;
+  const hoursDisplay = hoursItem > 0 ? `${hoursItem} h ` : '';
+  const minutesDisplay = minutesItem > 0 ? `${minutesItem} m ` : '';
+  return hoursDisplay + minutesDisplay;
 
 };
 
-export {getRandomInteger, humanizeReleaseDate, humanizeYear, transformIntToHour, humanizeCommentDay};
+const generateRandomElement = (arrayItem) => {
+
+  const randomIndex = getRandomInteger(0, arrayItem.length - 1);
+
+  return arrayItem[randomIndex];
+};
+
+export {getRandomInteger, humanizeReleaseDate, humanizeYear, transformIntToHour, humanizeCommentDay, generateRandomElement};
