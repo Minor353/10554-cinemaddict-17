@@ -1,5 +1,5 @@
-import {createElement} from '../render.js';
-import { humanizeReleaseDate, transformIntToHour, humanizeCommentDay } from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import { humanizeReleaseDate, transformIntToHour, humanizeCommentDay } from '../utils/humanize-date.js';
 
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
 const createCommentTemplate = (film, comments) => {
@@ -151,12 +151,12 @@ const createFilmDetailsTemplate = (film, comments) => {
   `
   );};
 
-export default class FilmDetailsView {
-  #element = null;
+export default class FilmDetailsView extends AbstractView {
   #film = null;
   #comments = null;
 
   constructor(film, comments) {
+    super();
     this.#film = film;
     this.#comments = comments;
   }
@@ -165,15 +165,14 @@ export default class FilmDetailsView {
     return createFilmDetailsTemplate(this.#film, this.#comments);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#clickHandler);
+  };
 
-    return this.#element;
-  }
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
+  };
 
-  removeElement() {
-    this.#element = null;
-  }
 }
