@@ -1,4 +1,4 @@
-import { generateRandomElement} from '../utils.js';
+import { generateRandomElement} from '../utils/common.js';
 
 const titles = [
   'The Dance of Life',
