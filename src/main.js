@@ -15,7 +15,7 @@ const commentsModel = new CommentsModel();
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
 
 render(new ProfileRatingView(), siteHeaderElement);
-render(new MainNavigationView(), siteMainElement);
+render(new MainNavigationView(filmsModel), siteMainElement);
 
 render(new NumberOfFilmsView(), siteFooterStatisticsElement);
 
