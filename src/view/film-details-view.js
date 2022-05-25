@@ -1,4 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
+import { checkControlStatus } from '../utils/films.js';
 import { humanizeReleaseDate, transformIntToHour, humanizeCommentDay } from '../utils/humanize-date.js';
 
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
@@ -100,9 +101,9 @@ const createFilmDetailsTemplate = (film, comments) => {
       </div>
 
       <section class="film-details__controls">
-        <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-        <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-        <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watchlist ${checkControlStatus(film['user_details'].watchlist, 'film-details__control-button--active')}" id="watchlist" name="watchlist">Add to watchlist</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watched ${checkControlStatus(film['user_details']['already_watched'], 'film-details__control-button--active')}" id="watched" name="watched">Already watched</button>
+        <button type="button" class="film-details__control-button film-details__control-button--favorite ${checkControlStatus(film['user_details'].favorites, 'film-details__control-button--active')}" id="favorite" name="favorite">Add to favorites</button>
       </section>
     </div>
 

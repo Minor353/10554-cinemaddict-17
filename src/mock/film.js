@@ -1,4 +1,5 @@
 import { generateRandomElement} from '../utils/common.js';
+import {nanoid} from 'nanoid';
 
 const titles = [
   'The Dance of Life',
@@ -22,7 +23,7 @@ const posters = [
 
 export const generateFilm = () => (
   {
-    id: '0',
+    id: nanoid(),
     comments: [
       '1', '4'
     ],
@@ -51,7 +52,7 @@ export const generateFilm = () => (
       description: 'Oscar-winning film, a war drama about two young people, from the creators of timeless classic "Nu, Pogodi!" and "Alice in Wonderland", with the best fight scenes since Bruce Lee.'
     },
     'user_details': {
-      watchlist: true,
+      watchlist: false,
       'already_watched': true,
       'watching_date': '2019-04-12T16:12:32.554Z',
       favorite: false
