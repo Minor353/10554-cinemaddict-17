@@ -55,7 +55,7 @@ export const generateFilm = () => (
       watchlist: false,
       'already_watched': true,
       'watching_date': '2019-04-12T16:12:32.554Z',
-      favorite: false
+      favorite: true
     }
   }
 );

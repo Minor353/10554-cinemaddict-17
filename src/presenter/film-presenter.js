@@ -18,25 +18,12 @@ export default class FilmPresenter {
   init = (card, comments) => {
     this.#card = card;
     this.#comments = comments;
+
     const prevFilmComponent = this.#filmComponent;
     const prevFilmDetailsComponent = this.#filmDetailsComponent;
 
     this.#filmComponent = new FilmCardView(this.#card);
     this.#filmDetailsComponent = new FilmDetailsView(this.#card, this.#comments);
-
-    if (prevFilmComponent === null || prevFilmDetailsComponent === null) {
-      render(this.#filmComponent, this.#container);
-      return;
-    }
-
-    if (this.#container.contains(prevFilmComponent.element)) {
-      replace(this.#filmComponent, prevFilmComponent);
-    }
-
-    if (document.body.contains(prevFilmDetailsComponent.element)) {
-      replace(this.#filmDetailsComponent, prevFilmDetailsComponent);
-    }
-
 
     this.#filmComponent.setClickHandler(() => {
       this.#showFilmDetailsPopup();
@@ -51,6 +38,20 @@ export default class FilmPresenter {
       this.#hideFilmDetailsPopup();
       document.removeEventListener('keydown', this.#onEscKeyDown);
     });
+
+    if (prevFilmComponent === null || prevFilmDetailsComponent === null) {
+      render(this.#filmComponent, this.#container);
+      return;
+    }
+
+    if (this.#container.contains(prevFilmComponent.element)) {
+      replace(this.#filmComponent, prevFilmComponent);
+    }
+
+    if (document.body.contains(prevFilmDetailsComponent.element)) {
+      replace(this.#filmDetailsComponent, prevFilmDetailsComponent);
+    }
+
 
     remove(prevFilmComponent);
     remove(prevFilmDetailsComponent);
@@ -83,9 +84,23 @@ export default class FilmPresenter {
   };
 
   #handleWatchedClick = () => {
+    this.#changeData({
+      ...this.#card,
+      'user_details': {
+        ...this.#card['user_details'],
+        ['already_watched']: !this.#card['user_details']['already_watched']
+      }
+    }, this.#comments);
   };
 
   #handleFavoriteClick = () => {
+    this.#changeData({
+      ...this.#card,
+      'user_details': {
+        ...this.#card['user_details'],
+        favorite: !this.#card['user_details'].favorite
+      }
+    }, this.#comments);
   };
 
   #onEscKeyDown = (evt) => {
