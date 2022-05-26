@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 const checkControlStatus = (controlStatus, activeClass) => {
   if (controlStatus) {
     return activeClass;
@@ -6,4 +8,15 @@ const checkControlStatus = (controlStatus, activeClass) => {
   }
 };
 
-export {checkControlStatus};
+/*const sortRatingDown = (filmA, filmB) => {
+
+};*/
+
+const sortDateDown = (filmA, filmB) => {
+  const weight = 0;
+
+  return weight ?? dayjs(filmB.release.date).diff(dayjs(filmA.release.date));
+};
+
+
+export {checkControlStatus, sortDateDown};

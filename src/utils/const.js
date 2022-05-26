@@ -16,4 +16,10 @@ const FILMS_LIST_CONFIG = {
   },
 };
 
-export {FILM_COUNT_PER_STEP, RATE_FILM_PER_STEP, FILMS_LIST_CONFIG};
+const SortType = {
+  DEFAULT: 'default',
+  DATE_DOWN: 'date-down',
+  RATING_DOWN: 'reting-down',
+};
+
+export {FILM_COUNT_PER_STEP, RATE_FILM_PER_STEP, FILMS_LIST_CONFIG, SortType};

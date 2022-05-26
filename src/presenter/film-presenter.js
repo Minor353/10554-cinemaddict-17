@@ -2,6 +2,11 @@ import FilmCardView from '../view/film-card-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
 import {render, replace, remove} from '../framework/render.js';
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  OPENED: 'OPENED',
+};
+
 export default class FilmPresenter {
   #card = null;
   #comments = null;
@@ -9,10 +14,13 @@ export default class FilmPresenter {
   #filmComponent = null;
   #filmDetailsComponent = null;
   #changeData = null;
+  #changeMode = null;
+  #mode = Mode.DEFAULT;
 
-  constructor(container, changeData){
+  constructor(container, changeData, changeMode){
     this.#container = container;
     this.#changeData = changeData;
+    this.#changeMode = changeMode;
   }
 
   init = (card, comments) => {
@@ -34,6 +42,10 @@ export default class FilmPresenter {
     this.#filmComponent.setWatchedClickHandler(this.#handleWatchedClick);
     this.#filmComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
 
+    this.#filmDetailsComponent.setWatchlistClickHandler(this.#handleWatchListClick);
+    this.#filmDetailsComponent.setWatchedClickHandler(this.#handleWatchedClick);
+    this.#filmDetailsComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
+
     this.#filmDetailsComponent.setClickHandler(() => {
       this.#hideFilmDetailsPopup();
       document.removeEventListener('keydown', this.#onEscKeyDown);
@@ -48,7 +60,7 @@ export default class FilmPresenter {
       replace(this.#filmComponent, prevFilmComponent);
     }
 
-    if (document.body.contains(prevFilmDetailsComponent.element)) {
+    if (this.#mode === Mode.OPENED) {
       replace(this.#filmDetailsComponent, prevFilmDetailsComponent);
     }
 
@@ -63,14 +75,24 @@ export default class FilmPresenter {
     remove(this.#filmDetailsComponent);
   };
 
+  resetView = () => {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#hideFilmDetailsPopup();
+      document.body.classList.add('hide-overflow');
+    }
+  };
+
   #showFilmDetailsPopup = () => {
     document.body.appendChild(this.#filmDetailsComponent.element);
     document.body.classList.add('hide-overflow');
+    this.#changeMode();
+    this.#mode = Mode.OPENED;
   };
 
   #hideFilmDetailsPopup = () => {
     document.body.removeChild(this.#filmDetailsComponent.element);
     document.body.classList.remove('hide-overflow');
+    this.#mode = Mode.DEFAULT;
   };
 
   #handleWatchListClick = () => {
