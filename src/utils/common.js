@@ -5,6 +5,8 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
+const getRandomDecimalNumber = (max, min) => ((Math.random() * (max - min)) + min).toFixed(1);
+
 
 const generateRandomElement = (arrayItem) => {
 
@@ -27,5 +29,5 @@ const updateItem = (items, update) => {
   ];
 };
 
-export {getRandomInteger, generateRandomElement, updateItem};
+export {getRandomInteger, generateRandomElement, updateItem, getRandomDecimalNumber};
 

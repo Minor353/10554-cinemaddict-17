@@ -1,6 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeYear, transformIntToHour } from '../utils/humanize-date.js';
-import { checkControlStatus } from '../utils/films.js';
 
 const createFilmCardTemplate = (film) => (
   `
@@ -18,9 +17,9 @@ const createFilmCardTemplate = (film) => (
         <span class="film-card__comments">5 comments</span>
         </a>
         <div class="film-card__controls">
-        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${checkControlStatus(film['user_details'].watchlist, 'film-card__controls-item--active')}" type="button">Add to watchlist</button>
-        <button class="film-card__controls-item film-card__controls-item--mark-as-watched ${checkControlStatus(film['user_details']['already_watched'], 'film-card__controls-item--active')}" type="button">Mark as watched</button>
-        <button class="film-card__controls-item film-card__controls-item--favorite ${checkControlStatus(film['user_details'].favorite, 'film-card__controls-item--active')}" type="button">Mark as favorite</button>
+        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${film['user_details'].watchlist && 'film-card__controls-item--active'}" type="button">Add to watchlist</button>
+        <button class="film-card__controls-item film-card__controls-item--mark-as-watched ${film['user_details']['already_watched'] && 'film-card__controls-item--active'}" type="button">Mark as watched</button>
+        <button class="film-card__controls-item film-card__controls-item--favorite ${film['user_details'].favorite && 'film-card__controls-item--active'}" type="button">Mark as favorite</button>
         </div>
     </article>
   `
