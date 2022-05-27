@@ -7,7 +7,7 @@ import FilmPresenter from './film-presenter.js';
 import MoreButtonPresenter from './more-button-presenter.js';
 import {updateItem} from '../utils/common.js';
 import {render} from '../framework/render.js';
-import {sortDateDown} from '../utils/films.js';
+import {sortDateDown, sortRateDown} from '../utils/films.js';
 import {SortType} from '../utils/const.js';
 import { /*RATE_FILM_PER_STEP,*/ FILM_COUNT_PER_STEP, FILMS_LIST_CONFIG} from '../utils/const.js';
 
@@ -57,9 +57,7 @@ export default class FilmsPresenter {
       render(this.#filmsWrapper, this.#filmsContainer);
       render(this.#mainFilmsList, this.#filmsWrapper.element);
       render(this.#mainFilmsListContainer, this.#mainFilmsList.element);
-      for(let i = 0; i < Math.min(this.#myFilms.length, FILM_COUNT_PER_STEP); i++){
-        this.#renderFilmCards(this.#myFilms[i], this.#filmComments, this.#mainFilmsListContainer.element);
-      }
+      this.#renderMainFilmsList();
       render(this.#topRatedFilmsList, this.#filmsWrapper.element);
       render(this.#topRatedFilmsListContainer, this.#topRatedFilmsList.element);
       /*for(let i = 0; i < Math.min(this.#topRatedFilms.length, RATE_FILM_PER_STEP); i++){
@@ -105,20 +103,25 @@ export default class FilmsPresenter {
       case SortType.DATE_DOWN:
         this.#myFilms.sort(sortDateDown);
         break;
+      case SortType.RATING_DOWN:
+        this.#myFilms.sort(sortRateDown);
+        break;
       default:
         this.#myFilms = [...this.#sourcedBoardFilms];
     }
-
     this.#currentSortType = sortType;
   };
 
   #handleSortTypeChange = (sortType) => {
-    if (this.#currentSortType === sortType) {
+    if (this.#currentSortType === sortType){
       return;
     }
-
     this.#sortFilmCards(sortType);
     this.#clearFilmList();
+    this.#renderMainFilmsList();
+  };
+
+  #renderMainFilmsList = () => {
     for(let i = 0; i < Math.min(this.#myFilms.length, FILM_COUNT_PER_STEP); i++){
       this.#renderFilmCards(this.#myFilms[i], this.#filmComments, this.#mainFilmsListContainer.element);
     }

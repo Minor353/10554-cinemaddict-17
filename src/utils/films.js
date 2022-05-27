@@ -1,22 +1,16 @@
 import dayjs from 'dayjs';
+import { getRandomInteger } from './common.js';
 
-const checkControlStatus = (controlStatus, activeClass) => {
-  if (controlStatus) {
-    return activeClass;
-  } else {
-    return '';
-  }
+
+const generateRandomDate = (rangeType, min, max) => {
+  const daysGap = getRandomInteger(max, min);
+
+  return dayjs().add(daysGap, rangeType).toDate();
 };
 
-/*const sortRatingDown = (filmA, filmB) => {
+const sortDateDown = (filmA, filmB) => dayjs(filmB['film_info'].release.date).diff(dayjs(filmA['film_info'].release.date));
 
-};*/
-
-const sortDateDown = (filmA, filmB) => {
-  const weight = 0;
-
-  return weight ?? dayjs(filmB.release.date).diff(dayjs(filmA.release.date));
-};
+const sortRateDown = (filmA, filmB) => filmB['film_info']['total_rating'] - filmA['film_info']['total_rating'];
 
 
-export {checkControlStatus, sortDateDown};
+export {sortRateDown, sortDateDown, generateRandomDate};

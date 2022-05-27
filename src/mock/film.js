@@ -1,4 +1,5 @@
-import { generateRandomElement} from '../utils/common.js';
+import { generateRandomElement, getRandomDecimalNumber} from '../utils/common.js';
+import { generateRandomDate } from '../utils/films.js';
 import {nanoid} from 'nanoid';
 
 const titles = [
@@ -30,7 +31,7 @@ export const generateFilm = () => (
     'film_info': {
       title: generateRandomElement(titles),
       'alternative_title': 'Laziness Who Sold Themselves',
-      'total_rating': 5.3,
+      'total_rating': Number(getRandomDecimalNumber(10, 0)).toFixed(1),
       poster: `images/posters/${generateRandomElement(posters)}`,
       'age_rating': 12,
       director: 'Tom Ford',
@@ -41,7 +42,7 @@ export const generateFilm = () => (
         'Morgan Freeman'
       ],
       release: {
-        date: '2019-05-11T00:00:00.000Z',
+        date: generateRandomDate('year', -40, 0),
         'release_country': 'Finland'
       },
       runtime: 77,
