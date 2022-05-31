@@ -3,6 +3,7 @@ import { humanizeReleaseDate, transformIntToHour, humanizeCommentDay } from '../
 import { nanoid } from 'nanoid';
 
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
+
 const createCommentTemplate = (film, comments) => {
   const listComments = [];
   const idComments = new Set(film.comments);
@@ -170,7 +171,6 @@ export default class FilmDetailsView extends AbstractStatefulView {
     return createFilmDetailsTemplate(this._state, this._state.comments, this._state.emojiSelected, this._state.typedComment);
   }
 
-  _restoreHandlers = () => {};
 
   setClickHandler = (callback) => {
     this._callback.click = callback;
@@ -247,13 +247,13 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.element.querySelector('.film-details__emoji-list').addEventListener('click', this.#emojiImageClickHandler);
   };
 
-  /*_restoreHandlers = () => {
+  _restoreHandlers = () => {
     this.#setInnerHandlers();
-    this.setClickHandler(this._callback.clickHandler);
+    this.setClickHandler(this._callback.click);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
     this.setWatchlistClickHandler(this._callback.watchlistClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
-  };*/
+  };
 
   static parseCommentToState = (comment) => this._state.comments.push(comment);
 
