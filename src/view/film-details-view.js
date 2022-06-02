@@ -1,7 +1,9 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeReleaseDate, transformIntToHour, humanizeCommentDay } from '../utils/humanize-date.js';
+import { nanoid } from 'nanoid';
 
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
+
 const createCommentTemplate = (film, comments) => {
   const listComments = [];
   const idComments = new Set(film.comments);
@@ -29,7 +31,12 @@ const createCommentTemplate = (film, comments) => {
     `)).join('');
 };
 
-const createFilmDetailsTemplate = (film, comments) => {
+const showSelectedEmoji = (emoji) => emoji ? `<img src="${emoji}" width="55" height="55" alt="emoji">` : '';
+
+const showTypedComment = (comment) => comment ? `<textarea class='film-details__comment-input' name='comment'>${comment}</textarea>` : '<textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>';
+
+
+const createFilmDetailsTemplate = (film, comments, emojiSelected, typedComment) => {
   const genreTemplate = createGenreTemplate(film.film_info.genre);
   const commentTemplate = createCommentTemplate(film, comments);
 
@@ -116,10 +123,12 @@ const createFilmDetailsTemplate = (film, comments) => {
         </ul>
 
         <div class="film-details__new-comment">
-          <div class="film-details__add-emoji-label"></div>
+          <div class="film-details__add-emoji-label">
+          ${showSelectedEmoji(emojiSelected)}
+          </div>
 
           <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+          ${showTypedComment(typedComment)}
           </label>
 
           <div class="film-details__emoji-list">
@@ -151,19 +160,17 @@ const createFilmDetailsTemplate = (film, comments) => {
   `
   );};
 
-export default class FilmDetailsView extends AbstractView {
-  #film = null;
-  #comments = null;
-
+export default class FilmDetailsView extends AbstractStatefulView {
   constructor(film, comments) {
     super();
-    this.#film = film;
-    this.#comments = comments;
+    this._state = FilmDetailsView.parseDataToState(film, comments);
+    this.#setInnerHandlers();
   }
 
   get template() {
-    return createFilmDetailsTemplate(this.#film, this.#comments);
+    return createFilmDetailsTemplate(this._state, this._state.comments, this._state.emojiSelected, this._state.typedComment);
   }
+
 
   setClickHandler = (callback) => {
     this._callback.click = callback;
@@ -204,5 +211,52 @@ export default class FilmDetailsView extends AbstractView {
     evt.preventDefault();
     this._callback.click();
   };
+
+  #emojiImageClickHandler = (evt) => {
+    const commentText = this.element.querySelector('.film-details__comment-input').value;
+    if (evt.target.nodeName === 'IMG') {
+      const emojiName = evt.target.src;
+      if(this._state.emojiSelected !== emojiName){
+        const scrollPosition = this.element.scrollTop;
+        this.updateElement({emojiSelected: emojiName, typedComment: commentText});
+        this.element.scrollTop = scrollPosition;
+      }
+    }
+  };
+
+  #submitFormHandler = (evt) => {
+    if (evt.ctrlKey && evt.code === 'Enter') {
+      const scrollPosition = this.element.scrollTop;
+      this._state.comments.push(this.#submitFormPressHandler());
+      this.updateElement({emojiSelected: null, typedComment: null});
+      this.element.scrollTop = scrollPosition;
+    }
+  };
+
+  #submitFormPressHandler = () =>
+    ({
+      id: nanoid(),
+      author: 'Ilya',
+      comment: this.element.querySelector('.film-details__comment-input').value,
+      date: humanizeCommentDay(new Date()),
+      emotion: this.element.querySelector('.film-details__emoji-item:checked').value
+    });
+
+  #setInnerHandlers = () => {
+    document.addEventListener('keypress', this.#submitFormHandler);
+    this.element.querySelector('.film-details__emoji-list').addEventListener('click', this.#emojiImageClickHandler);
+  };
+
+  _restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setClickHandler(this._callback.click);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setWatchlistClickHandler(this._callback.watchlistClick);
+    this.setWatchedClickHandler(this._callback.watchedClick);
+  };
+
+  static parseCommentToState = (comment) => this._state.comments.push(comment);
+
+  static parseDataToState = (film, comments) => ({...film, comments, emojiSelected: null, typedComment: null});
 
 }
