@@ -31,10 +31,17 @@ const createCommentTemplate = (film, comments) => {
     `)).join('');
 };
 
-const showSelectedEmoji = (emoji) => emoji ? `<img src="${emoji}" width="55" height="55" alt="emoji">` : '';
+const showSelectedEmoji = (emoji) => emoji ? `<img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji">` : '';
 
 const showTypedComment = (comment) => comment ? `<textarea class='film-details__comment-input' name='comment'>${comment}</textarea>` : '<textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>';
 
+const setCheckedEmoji = (checkedEmoji, emojiName) => {
+  if(checkedEmoji === emojiName){
+    return 'checked';
+  } else {
+    return '';
+  }
+};
 
 const createFilmDetailsTemplate = (film, comments, emojiSelected, typedComment) => {
   const genreTemplate = createGenreTemplate(film.film_info.genre);
@@ -132,22 +139,22 @@ const createFilmDetailsTemplate = (film, comments, emojiSelected, typedComment) 
           </label>
 
           <div class="film-details__emoji-list">
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
+            <input class="film-details__emoji-item visually-hidden" ${setCheckedEmoji(emojiSelected, 'smile')} name="comment-emoji" type="radio" id="emoji-smile" value="smile">
             <label class="film-details__emoji-label" for="emoji-smile">
               <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
             </label>
 
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
+            <input class="film-details__emoji-item visually-hidden" ${setCheckedEmoji(emojiSelected, 'sleeping')} name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
             <label class="film-details__emoji-label" for="emoji-sleeping">
               <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
             </label>
 
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke">
+            <input class="film-details__emoji-item visually-hidden" ${setCheckedEmoji(emojiSelected, 'puke')} name="comment-emoji" type="radio" id="emoji-puke" value="puke">
             <label class="film-details__emoji-label" for="emoji-puke">
               <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
             </label>
 
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
+            <input class="film-details__emoji-item visually-hidden" ${setCheckedEmoji(emojiSelected, 'angry')} name="comment-emoji" type="radio" id="emoji-angry" value="angry">
             <label class="film-details__emoji-label" for="emoji-angry">
               <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
             </label>
@@ -209,13 +216,14 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   #clickHandler = (evt) => {
     evt.preventDefault();
+    this.updateElement({emojiSelected: null, typedComment: null});
     this._callback.click();
   };
 
   #emojiImageClickHandler = (evt) => {
     const commentText = this.element.querySelector('.film-details__comment-input').value;
     if (evt.target.nodeName === 'IMG') {
-      const emojiName = evt.target.src;
+      const emojiName = evt.target.src.slice(evt.target.src.lastIndexOf('/')+1, evt.target.src.lastIndexOf('.'));
       if(this._state.emojiSelected !== emojiName){
         const scrollPosition = this.element.scrollTop;
         this.updateElement({emojiSelected: emojiName, typedComment: commentText});
@@ -246,6 +254,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
     document.addEventListener('keypress', this.#submitFormHandler);
     this.element.querySelector('.film-details__emoji-list').addEventListener('click', this.#emojiImageClickHandler);
   };
+
 
   _restoreHandlers = () => {
     this.#setInnerHandlers();
