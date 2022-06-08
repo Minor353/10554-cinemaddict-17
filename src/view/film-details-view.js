@@ -37,9 +37,7 @@ const showTypedComment = (comment) => comment ? `<textarea class='film-details__
 
 const setCheckedEmoji = (checkedEmoji, emojiName) => {
   if(checkedEmoji === emojiName){
-    return 'checked';
-  } else {
-    return '';
+    return checkedEmoji === emojiName ? 'checked' : '';
   }
 };
 
@@ -222,8 +220,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   #emojiImageClickHandler = (evt) => {
     const commentText = this.element.querySelector('.film-details__comment-input').value;
-    if (evt.target.nodeName === 'IMG') {
-      const emojiName = evt.target.src.slice(evt.target.src.lastIndexOf('/')+1, evt.target.src.lastIndexOf('.'));
+    if (evt.target.nodeName === 'INPUT') {
+      const emojiName = evt.target.value;
       if(this._state.emojiSelected !== emojiName){
         const scrollPosition = this.element.scrollTop;
         this.updateElement({emojiSelected: emojiName, typedComment: commentText});

@@ -1,6 +1,7 @@
 import FilmCardView from '../view/film-card-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
 import {render, replace, remove} from '../framework/render.js';
+import { UserAction, UpdateType } from '../utils/const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -96,33 +97,42 @@ export default class FilmPresenter {
   };
 
   #handleWatchListClick = () => {
-    this.#changeData({
-      ...this.#card,
-      'user_details': {
-        ...this.#card['user_details'],
-        watchlist: !this.#card['user_details'].watchlist
-      }
-    }, this.#comments);
+    this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.PATCH,
+      {
+        ...this.#card,
+        'user_details': {
+          ...this.#card['user_details'],
+          watchlist: !this.#card['user_details'].watchlist
+        }
+      }, this.#comments);
   };
 
   #handleWatchedClick = () => {
-    this.#changeData({
-      ...this.#card,
-      'user_details': {
-        ...this.#card['user_details'],
-        ['already_watched']: !this.#card['user_details']['already_watched']
-      }
-    }, this.#comments);
+    this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.PATCH,
+      {
+        ...this.#card,
+        'user_details': {
+          ...this.#card['user_details'],
+          ['already_watched']: !this.#card['user_details']['already_watched']
+        }
+      }, this.#comments);
   };
 
   #handleFavoriteClick = () => {
-    this.#changeData({
-      ...this.#card,
-      'user_details': {
-        ...this.#card['user_details'],
-        favorite: !this.#card['user_details'].favorite
-      }
-    }, this.#comments);
+    this.#changeData(
+      UserAction.UPDATE_FILM,
+      UpdateType.PATCH,
+      {
+        ...this.#card,
+        'user_details': {
+          ...this.#card['user_details'],
+          favorite: !this.#card['user_details'].favorite
+        }
+      }, this.#comments);
   };
 
   #onEscKeyDown = (evt) => {
