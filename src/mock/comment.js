@@ -9,9 +9,9 @@ const generateEmotion = () => {
   return emotions[randomIndex];
 };
 
-export const generateComment = () => (
+export const generateComment = (item, index) => (
   {
-    'id': String(getRandomInteger(0, 5)),
+    'id': String(index),
     'author': 'Ilya',
     'comment': 'a film that changed my life, a true masterpiece, post-credit scene was just amazing omg.',
     'date': '2019-06-11T16:12:32.554Z',

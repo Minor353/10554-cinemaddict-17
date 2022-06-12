@@ -22,11 +22,11 @@ const posters = [
 ];
 
 
-export const generateFilm = () => (
+export const generateFilm = (item, index) => (
   {
     id: nanoid(),
     comments: [
-      '1', '4'
+      String(index)
     ],
     'film_info': {
       title: generateRandomElement(titles),

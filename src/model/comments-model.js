@@ -3,7 +3,7 @@ import Observable from '../framework/observable';
 
 
 export default class CommentsModel extends Observable {
-  #comments = Array.from({length: 5}, generateComment);
+  #comments = Array.from({length: 18}, generateComment);
 
   get comments() {
     return this.#comments;
@@ -11,8 +11,7 @@ export default class CommentsModel extends Observable {
 
   addComment = (updateType, update, updatedComment) => {
     this.#comments = [
-      updatedComment,
-      ...this.#comments
+      updatedComment
     ];
 
     this._notify(updateType, update);

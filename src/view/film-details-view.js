@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
 
 const createCommentTemplate = (film, comments) => {
+
   const listComments = [];
   const idComments = new Set(film.comments);
   comments.forEach((element) => {
@@ -12,7 +13,6 @@ const createCommentTemplate = (film, comments) => {
       listComments.push(element);
     }
   });
-
   return listComments.map((comment) => (
     `
     <li class="film-details__comment">
@@ -41,7 +41,7 @@ const setCheckedEmoji = (checkedEmoji, emojiName) => {
   }
 };
 
-const createFilmDetailsTemplate = (film, comments, emojiSelected, typedComment) => {
+const createFilmDetailsTemplate = ({film, comments, emojiSelected, typedComment}) => {
   const genreTemplate = createGenreTemplate(film.film_info.genre);
   const commentTemplate = createCommentTemplate(film, comments);
 
@@ -173,7 +173,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
   }
 
   get template() {
-    return createFilmDetailsTemplate(this._state, this._state.comments, this._state.emojiSelected, this._state.typedComment);
+    return createFilmDetailsTemplate(this._state);
   }
 
 
@@ -264,6 +264,6 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   static parseCommentToState = (comment) => this._state.comments.push(comment);
 
-  static parseDataToState = (film, comments) => ({...film, comments, emojiSelected: null, typedComment: null});
+  static parseDataToState = (film, comments) => ({film, comments, emojiSelected: null, typedComment: null});
 
 }

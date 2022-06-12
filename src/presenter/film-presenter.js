@@ -27,7 +27,6 @@ export default class FilmPresenter {
   init = (card, comments) => {
     this.#card = card;
     this.#comments = comments;
-
     const prevFilmComponent = this.#filmComponent;
     const prevFilmDetailsComponent = this.#filmDetailsComponent;
 
@@ -99,7 +98,7 @@ export default class FilmPresenter {
   #handleWatchListClick = () => {
     this.#changeData(
       UserAction.UPDATE_FILM,
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       {
         ...this.#card,
         'user_details': {
@@ -112,7 +111,7 @@ export default class FilmPresenter {
   #handleWatchedClick = () => {
     this.#changeData(
       UserAction.UPDATE_FILM,
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       {
         ...this.#card,
         'user_details': {
@@ -125,7 +124,7 @@ export default class FilmPresenter {
   #handleFavoriteClick = () => {
     this.#changeData(
       UserAction.UPDATE_FILM,
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       {
         ...this.#card,
         'user_details': {

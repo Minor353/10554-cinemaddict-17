@@ -36,10 +36,10 @@ const UpdateType = {
 };
 
 const FilterType = {
-  ALL: 'All',
-  Watchlist: 'Watchlist',
-  History: 'History',
-  Favorites: 'Favorites'
+  ALL: 'all',
+  WATCH_LIST: 'watchlist',
+  HISTORY: 'history',
+  FAVORITES: 'favorites',
 };
 
 export {FILM_COUNT_PER_STEP, RATE_FILM_PER_STEP, FILMS_LIST_CONFIG, SortType, UserAction, UpdateType, FilterType};

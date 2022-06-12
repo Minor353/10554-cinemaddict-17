@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 
-const createMainNavigationTemplate = (filterCounts) => (
+const createFiltersTemplate = (filterCounts) => (
   `
   <nav class="main-navigation">
     <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
@@ -12,7 +12,7 @@ const createMainNavigationTemplate = (filterCounts) => (
   `
 );
 
-export default class MainNavigationView extends AbstractView {
+export default class FiltersView extends AbstractView {
   #filterCounts = null;
   constructor(filterCounts) {
     super();
@@ -20,6 +20,6 @@ export default class MainNavigationView extends AbstractView {
   }
 
   get template() {
-    return createMainNavigationTemplate(this.#filterCounts);
+    return createFiltersTemplate(this.#filterCounts);
   }
 }
