@@ -7,7 +7,6 @@ export default class FilterPresenter {
   #filterContainer = null;
   #filterModel = null;
   #filmsModel = null;
-  #filtersData = null;
 
   #filterComponent = null;
 
@@ -15,7 +14,6 @@ export default class FilterPresenter {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
     this.#filmsModel = filmsModel;
-    this.#filtersData = countFiltersData(this.#filmsModel);
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -23,27 +21,27 @@ export default class FilterPresenter {
 
   get filters() {
     const films = this.#filmsModel.films;
-
+    const filtersData = countFiltersData(this.#filmsModel);
     return [
       {
         type: FilterType.ALL,
-        name: 'All',
+        name: 'All movies',
         count: films.length,
       },
       {
         type: FilterType.WATCH_LIST,
         name: 'Watchlist',
-        count: this.#filtersData.watchlist,
+        count: filtersData.watchlist,
       },
       {
         type: FilterType.HISTORY,
         name: 'History',
-        count: this.#filtersData.alredyWatched,
+        count: filtersData.alredyWatched,
       },
       {
         type: FilterType.FAVORITES,
         name: 'Favorites',
-        count: this.#filtersData.favorites,
+        count: filtersData.favorites,
       },
     ];
   }

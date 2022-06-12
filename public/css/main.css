@@ -148,6 +148,10 @@ button {
   margin-right: auto;
 }
 
+.main-navigation__item:first-child span {
+  display: none;
+}
+
 .main-navigation__item-count {
   background:rgba(0,46,255, 0.4);
   border-radius: 18px;

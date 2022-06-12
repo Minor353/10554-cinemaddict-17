@@ -15,7 +15,7 @@ const siteMainElement = document.querySelector('.main');
 const filterModel = new FilterModel();
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
-const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
+const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel, filterModel);
 const filterPresenter = new FilterPresenter(siteMainElement, filterModel, filmsModel);
 
 render(new ProfileRatingView(), siteHeaderElement);

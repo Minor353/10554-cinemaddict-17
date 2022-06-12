@@ -31,22 +31,29 @@ export default class FilmsPresenter {
   #showMoreButtonComponent = null;
   #sortComponent = null;
   #filterComponent = null;
+  #filterModel = null;
 
 
-  constructor(filmsContainer, filmsModel, commentsModel){
+  constructor(filmsContainer, filmsModel, commentsModel, filterModel){
     this.#filmsContainer = filmsContainer;
     this.#filmsModel = filmsModel;
     this.#commentsModel = commentsModel;
+    this.#filterModel = filterModel;
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get films() {
+    const filterType = this.#filterModel.filter;
+    const films = this.#filmsModel.films;
+    const filteredFilms = films.filter((film) => film['user_details'][filterType]);
+
     switch (this.#currentSortType) {
       case SortType.DATE_DOWN:
-        return  [...this.#filmsModel.films].sort(sortDateDown);
+        return  filteredFilms.sort(sortDateDown);
       case SortType.RATING_DOWN:
-        return  [...this.#filmsModel.films].sort(sortRateDown);
+        return  filteredFilms.sort(sortRateDown);
     }
 
     return this.#filmsModel.films;
