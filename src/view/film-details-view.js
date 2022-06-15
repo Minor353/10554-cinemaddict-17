@@ -1,6 +1,7 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeReleaseDate, transformIntToHour, humanizeCommentDay } from '../utils/humanize-date.js';
 import { nanoid } from 'nanoid';
+import he from 'he';
 
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
 
@@ -15,12 +16,12 @@ const createCommentTemplate = (film, comments) => {
   });
   return listComments.map((comment) => (
     `
-    <li class="film-details__comment">
+    <li class="film-details__comment" id="${comment.id}">
             <span class="film-details__comment-emoji">
               <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
             </span>
             <div>
-              <p class="film-details__comment-text">${comment.comment}</p>
+              <p class="film-details__comment-text">${he.encode(comment.comment)}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.author}</span>
                 <span class="film-details__comment-day">${humanizeCommentDay(comment.date)}</span>
@@ -113,7 +114,7 @@ const createFilmDetailsTemplate = ({film, comments, emojiSelected, typedComment}
 
       <section class="film-details__controls">
         <button type="button" class="film-details__control-button film-details__control-button--watchlist ${film['user_details'].watchlist && 'film-details__control-button--active'}" id="watchlist" name="watchlist">Add to watchlist</button>
-        <button type="button" class="film-details__control-button film-details__control-button--watched ${film['user_details']['already_watched'] && 'film-details__control-button--active'}" id="watched" name="watched">Already watched</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watched ${film['user_details'].history && 'film-details__control-button--active'}" id="watched" name="watched">Already watched</button>
         <button type="button" class="film-details__control-button film-details__control-button--favorite ${film['user_details'].favorite && 'film-details__control-button--active'}" id="favorite" name="favorite">Add to favorites</button>
       </section>
     </div>
@@ -230,27 +231,39 @@ export default class FilmDetailsView extends AbstractStatefulView {
     }
   };
 
-  #submitFormHandler = (evt) => {
-    if (evt.ctrlKey && evt.code === 'Enter') {
+
+  #setInnerHandlers = () => {
+    this.element.querySelector('.film-details__emoji-list').addEventListener('click', this.#emojiImageClickHandler);
+  };
+
+  setCommentAddHandler = (callback) => {
+    this._callback.commentAdd = callback;
+    this.element.querySelector('.film-details__comment-input').addEventListener('keydown', this.#commentAddHandler);
+  };
+
+  #commentAddHandler = (evt) => {
+    if ((evt.ctrlKey && evt.code === 'Enter')) {
       const scrollPosition = this.element.scrollTop;
-      this._state.comments.push(this.#submitFormPressHandler());
+      this._callback.commentAdd({
+        id: nanoid(),
+        author: 'Ilya',
+        comment: this.element.querySelector('.film-details__comment-input').value,
+        date: humanizeCommentDay(new Date()),
+        emotion: this.element.querySelector('.film-details__emoji-item:checked').value
+      });
       this.updateElement({emojiSelected: null, typedComment: null});
       this.element.scrollTop = scrollPosition;
     }
   };
 
-  #submitFormPressHandler = () =>
-    ({
-      id: nanoid(),
-      author: 'Ilya',
-      comment: this.element.querySelector('.film-details__comment-input').value,
-      date: humanizeCommentDay(new Date()),
-      emotion: this.element.querySelector('.film-details__emoji-item:checked').value
-    });
+  setCommentDeleteClickHandler = (callback) => {
+    this._callback.commentDeleteClick = callback;
+    this.element.querySelectorAll('.film-details__comment-delete').forEach((element) => element.addEventListener('click', this.#commentDeleteClickHandler));
+  };
 
-  #setInnerHandlers = () => {
-    document.addEventListener('keypress', this.#submitFormHandler);
-    this.element.querySelector('.film-details__emoji-list').addEventListener('click', this.#emojiImageClickHandler);
+  #commentDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.commentDeleteClick(evt.target.closest('.film-details__comment').id);
   };
 
 
@@ -260,6 +273,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.setFavoriteClickHandler(this._callback.favoriteClick);
     this.setWatchlistClickHandler(this._callback.watchlistClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
+    this.setCommentDeleteClickHandler(this._callback.commentDeleteClick);
+    this.setCommentAddHandler(this._callback.commentAdd);
   };
 
   static parseCommentToState = (comment) => this._state.comments.push(comment);

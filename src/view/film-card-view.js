@@ -18,7 +18,7 @@ const createFilmCardTemplate = (film) => (
         </a>
         <div class="film-card__controls">
         <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${film['user_details'].watchlist && 'film-card__controls-item--active'}" type="button">Add to watchlist</button>
-        <button class="film-card__controls-item film-card__controls-item--mark-as-watched ${film['user_details']['already_watched'] && 'film-card__controls-item--active'}" type="button">Mark as watched</button>
+        <button class="film-card__controls-item film-card__controls-item--mark-as-watched ${film['user_details'].history && 'film-card__controls-item--active'}" type="button">Mark as watched</button>
         <button class="film-card__controls-item film-card__controls-item--favorite ${film['user_details'].favorite && 'film-card__controls-item--active'}" type="button">Mark as favorite</button>
         </div>
     </article>

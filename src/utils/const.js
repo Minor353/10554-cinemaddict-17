@@ -38,8 +38,8 @@ const UpdateType = {
 const FilterType = {
   ALL: 'all',
   WATCH_LIST: 'watchlist',
-  HISTORY: 'already_watched',
-  FAVORITES: 'favorites',
+  HISTORY: 'history',
+  FAVORITES: 'favorite',
 };
 
 export {FILM_COUNT_PER_STEP, RATE_FILM_PER_STEP, FILMS_LIST_CONFIG, SortType, UserAction, UpdateType, FilterType};

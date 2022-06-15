@@ -54,7 +54,7 @@ export const generateFilm = (item, index) => (
     },
     'user_details': {
       watchlist: false,
-      'already_watched': true,
+      history: true,
       'watching_date': '2019-04-12T16:12:32.554Z',
       favorite: true
     }

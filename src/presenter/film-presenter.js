@@ -17,11 +17,13 @@ export default class FilmPresenter {
   #changeData = null;
   #changeMode = null;
   #mode = Mode.DEFAULT;
+  #commentModel = null;
 
-  constructor(container, changeData, changeMode){
+  constructor(container, changeData, changeMode, commentModel){
     this.#container = container;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
+    this.#commentModel = commentModel;
   }
 
   init = (card, comments) => {
@@ -45,6 +47,8 @@ export default class FilmPresenter {
     this.#filmDetailsComponent.setWatchlistClickHandler(this.#handleWatchListClick);
     this.#filmDetailsComponent.setWatchedClickHandler(this.#handleWatchedClick);
     this.#filmDetailsComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
+    this.#filmDetailsComponent.setCommentDeleteClickHandler(this.#handleCommentDeleteClick);
+    this.#filmDetailsComponent.setCommentAddHandler(this.#handleCommentAdd);
 
     this.#filmDetailsComponent.setClickHandler(() => {
       this.#hideFilmDetailsPopup();
@@ -68,6 +72,36 @@ export default class FilmPresenter {
     remove(prevFilmComponent);
     remove(prevFilmDetailsComponent);
 
+  };
+
+  #handleCommentDeleteClick = (commentId) => {
+    this.#commentModel.deleteComment(
+      UpdateType.PATCH,
+      commentId
+    );
+    this.#changeData(
+      UserAction.DELETE_COMMENT,
+      UpdateType.PATCH,
+      {
+        ...this.#card,
+        comments: this.#card.comments.filter((filmCommentId) => filmCommentId !== commentId),
+      }
+    );
+  };
+
+  #handleCommentAdd = (update) => {
+    this.#commentModel.addComment(
+      UpdateType.PATCH,
+      update
+    );
+    this.#changeData(
+      UserAction.ADD_COMMENT,
+      UpdateType.PATCH,
+      {
+        ...this.#card,
+        comments: [...this.#card.comments, update.id],
+      }
+    );
   };
 
   destroy = () => {
@@ -116,7 +150,7 @@ export default class FilmPresenter {
         ...this.#card,
         'user_details': {
           ...this.#card['user_details'],
-          ['already_watched']: !this.#card['user_details']['already_watched']
+          history: !this.#card['user_details'].history
         }
       }, this.#comments);
   };

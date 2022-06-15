@@ -9,25 +9,15 @@ export default class CommentsModel extends Observable {
     return this.#comments;
   }
 
-  addComment = (updateType, update, updatedComment) => {
-    this.#comments = [
-      updatedComment
-    ];
-
+  addComment = (updateType, update) => {
+    this.#comments.push(update);
     this._notify(updateType, update);
   };
 
-  deleteComment = (updateType, update, updatedComment) => {
-    const index = this.#comments.findIndex((comment) => comment.id === updatedComment.id);
-    if(index === -1) {
-      throw new Error('Can\'t update unexisting task');
-    }
-    this.#comments = [
-      ...this.#comments.slice(0, index),
-      ...this.#comments.slice(index + 1),
-    ];
+  deleteComment = (updateType, id) => {
+    this.#comments = this.#comments.filter((comment) => comment.id !== id);
 
-    this._notify(updateType, update);
+    this._notify(updateType, id);
   };
 
 }
