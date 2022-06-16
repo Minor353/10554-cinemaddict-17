@@ -148,12 +148,17 @@ button {
   margin-right: auto;
 }
 
+.main-navigation__item:first-child span {
+  display: none;
+}
+
 .main-navigation__item-count {
   background:rgba(0,46,255, 0.4);
   border-radius: 18px;
   font-weight: 500;
   padding: 0 10px;
   width: 1em;
+  pointer-events: none;
 }
 
 .main-navigation__item--active,

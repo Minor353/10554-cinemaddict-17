@@ -22,4 +22,24 @@ const SortType = {
   RATING_DOWN: 'reting-down',
 };
 
-export {FILM_COUNT_PER_STEP, RATE_FILM_PER_STEP, FILMS_LIST_CONFIG, SortType};
+const UserAction = {
+  UPDATE_FILM: 'UPDATE_FILM',
+  ADD_COMMENT: 'ADD_COMMENT',
+  DELETE_COMMENT: 'DELETE_COMMENT',
+  UPDATE_POPUP: 'UPDATE_POPUP',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const FilterType = {
+  ALL: 'all',
+  WATCH_LIST: 'watchlist',
+  HISTORY: 'history',
+  FAVORITES: 'favorite',
+};
+
+export {FILM_COUNT_PER_STEP, RATE_FILM_PER_STEP, FILMS_LIST_CONFIG, SortType, UserAction, UpdateType, FilterType};

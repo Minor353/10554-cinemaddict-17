@@ -22,11 +22,11 @@ const posters = [
 ];
 
 
-export const generateFilm = () => (
+export const generateFilm = (item, index) => (
   {
     id: nanoid(),
     comments: [
-      '1', '4'
+      String(index)
     ],
     'film_info': {
       title: generateRandomElement(titles),
@@ -54,7 +54,7 @@ export const generateFilm = () => (
     },
     'user_details': {
       watchlist: false,
-      'already_watched': true,
+      history: true,
       'watching_date': '2019-04-12T16:12:32.554Z',
       favorite: true
     }
