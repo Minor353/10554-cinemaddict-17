@@ -5,17 +5,8 @@ import he from 'he';
 
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
 
-const createCommentTemplate = (film, comments) => {
-
-  const listComments = [];
-  const idComments = new Set(film.comments);
-  comments.forEach((element) => {
-    if(idComments.has(element.id)){
-      listComments.push(element);
-    }
-  });
-  return listComments.map((comment) => (
-    `
+const createCommentTemplate = (comments) => comments.map((comment) => (
+  `
     <li class="film-details__comment" id="${comment.id}">
             <span class="film-details__comment-emoji">
               <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
@@ -30,7 +21,6 @@ const createCommentTemplate = (film, comments) => {
             </div>
           </li>
     `)).join('');
-};
 
 const showSelectedEmoji = (emoji) => emoji ? `<img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji">` : '';
 
@@ -44,7 +34,7 @@ const setCheckedEmoji = (checkedEmoji, emojiName) => {
 
 const createFilmDetailsTemplate = ({film, comments, emojiSelected, typedComment}) => {
   const genreTemplate = createGenreTemplate(film.film_info.genre);
-  const commentTemplate = createCommentTemplate(film, comments);
+  const commentTemplate = createCommentTemplate(comments);
 
   return (
     `

@@ -26,15 +26,13 @@ export default class FilmPresenter {
     this.#commentModel = commentModel;
   }
 
-  init = (card, comments) => {
+  init = (card) => {
     this.#card = card;
-    this.#comments = comments;
+    this.#comments = this.#commentModel.comments;
     const prevFilmComponent = this.#filmComponent;
     const prevFilmDetailsComponent = this.#filmDetailsComponent;
-
     this.#filmComponent = new FilmCardView(this.#card);
     this.#filmDetailsComponent = new FilmDetailsView(this.#card, this.#comments);
-
     this.#filmComponent.setClickHandler(() => {
       this.#showFilmDetailsPopup();
       document.addEventListener('keydown', this.#onEscKeyDown);
@@ -72,6 +70,29 @@ export default class FilmPresenter {
     remove(prevFilmComponent);
     remove(prevFilmDetailsComponent);
 
+  };
+
+  #getCommentsAndUpdateDetails = async () => {
+    const comments = await this.#commentModel.getCommentsById(this.#card.id);
+
+    this.prevFilmDetailsComponent = this.#filmDetailsComponent;
+    this.#replaceFilmDetailsComponent(comments);
+  };
+
+  #replaceFilmDetailsComponent = (comments) => {
+    this.#filmDetailsComponent = new FilmDetailsView(this.#card, comments);
+    this.#setFilmDetailsHandlers();
+    replace(this.#filmDetailsComponent, this.prevFilmDetailsComponent);
+    remove(this.prevFilmDetailsComponent);
+  };
+
+  #setFilmDetailsHandlers = () => {
+    this.#filmDetailsComponent.setClickHandler(this.#hideFilmDetailsPopup);
+    this.#filmDetailsComponent.setWatchlistClickHandler(this.#handleWatchListClick);
+    this.#filmDetailsComponent.setWatchedClickHandler(this.#handleWatchedClick);
+    this.#filmDetailsComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
+    this.#filmDetailsComponent.setCommentDeleteClickHandler(this.#handleCommentDeleteClick);
+    this.#filmDetailsComponent.setCommentAddHandler(this.#handleCommentAdd);
   };
 
   #handleCommentDeleteClick = (commentId) => {
@@ -121,6 +142,7 @@ export default class FilmPresenter {
     document.body.classList.add('hide-overflow');
     this.#changeMode();
     this.#mode = Mode.OPENED;
+    this.#getCommentsAndUpdateDetails();
   };
 
   #hideFilmDetailsPopup = () => {
