@@ -70,19 +70,19 @@ export default class FilmsPresenter {
   };
 
   #renderBoard = () => {
-    render(this.#mainFilmsList, this.#filmsWrapper.element, RenderPosition.AFTERBEGIN);
+    render(this.#mainFilmsList, this.#filmsWrapper.element);
+    render(this.#mainFilmsListContainer, this.#mainFilmsList.element);
+    render(this.#filmsWrapper, this.#filmsContainer);
 
     if (this.#isLoading) {
       this.#renderLoading();
       return;
     }
-
     if(this.films.length === 0 ){
       this.#renderNoFilms();
     } else {
       this.#renderSort();
-      render(this.#filmsWrapper, this.#filmsContainer);
-      render(this.#mainFilmsListContainer, this.#mainFilmsList.element);
+
       for(let i = 0; i < Math.min(this.films.length, this.#renderFilmCount); i++){
         this.#renderFilmCards(this.films[i], this.#commentsModel, this.#mainFilmsListContainer.element);
       }
@@ -164,7 +164,7 @@ export default class FilmsPresenter {
   #renderSort = () => {
     this.#sortComponent = new SortFilmsView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
-    render(this.#sortComponent, this.#filmsContainer);
+    render(this.#sortComponent, this.#filmsWrapper.element, RenderPosition.BEFOREBEGIN);
   };
 
   #handleShowMoreButtonClick = () => {
@@ -193,7 +193,7 @@ export default class FilmsPresenter {
   };
 
   #renderLoading = () => {
-    render(this.#loadingComponent, this.#mainFilmsList.element, RenderPosition.AFTERBEGIN);
+    render(this.#loadingComponent, this.#mainFilmsList.element);
   };
 
   #clearBoard = ({resetRenderedFilmCount = false, resetSortType = false} = {}) => {

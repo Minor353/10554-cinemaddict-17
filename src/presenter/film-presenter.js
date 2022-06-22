@@ -97,7 +97,6 @@ export default class FilmPresenter {
 
   #handleCommentDeleteClick = (commentId) => {
     this.#commentModel.deleteComment(
-      UpdateType.PATCH,
       commentId
     );
     this.#changeData(
@@ -112,8 +111,8 @@ export default class FilmPresenter {
 
   #handleCommentAdd = (update) => {
     this.#commentModel.addComment(
-      UpdateType.PATCH,
-      update
+      this.#card.id,
+      update,
     );
     this.#changeData(
       UserAction.ADD_COMMENT,
@@ -124,6 +123,7 @@ export default class FilmPresenter {
       }
     );
   };
+
 
   destroy = () => {
     remove(this.#filmComponent);

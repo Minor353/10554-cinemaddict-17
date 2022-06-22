@@ -3,9 +3,11 @@ import ApiService from './framework/api-service.js';
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };
 
-export default class TasksApiService extends ApiService {
+export default class FilmsApiService extends ApiService {
   get films () {
     return  this._load({url: 'movies'})
       .then(ApiService.parseResponse);
@@ -24,6 +26,31 @@ export default class TasksApiService extends ApiService {
     return parsedResponse;
   };
 
+  getComments = (filmId) => this._load({url: `comments/${filmId}`})
+    .then(ApiService.parseResponse);
+
+  addComment = async (filmId, comment) => {
+    const response = await this._load({
+      url: `comments/${filmId}`,
+      method: Method.POST,
+      body: JSON.stringify(comment),
+      headers: new Headers({'Content-Type': 'application/json'})
+    });
+
+    const parseResponse = await ApiService.parseResponse(response);
+
+    return parseResponse;
+  };
+
+  deleteComment = async (commentId) => {
+    const response = await this._load({
+      url: `comments/${commentId}`,
+      method: Method.DELETE
+    });
+
+    return response;
+  };
+
   #adaptFilmToServer = (film) => {
     const adaptedFilm = {
       ...film,
@@ -36,7 +63,4 @@ export default class TasksApiService extends ApiService {
 
     return adaptedFilm;
   };
-
-  getComments = (filmId) => this._load({url: `comments/${filmId}`})
-    .then(ApiService.parseResponse);
 }

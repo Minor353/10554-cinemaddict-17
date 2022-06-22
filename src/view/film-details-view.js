@@ -1,6 +1,5 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeReleaseDate, transformIntToHour, humanizeCommentDay } from '../utils/humanize-date.js';
-import { nanoid } from 'nanoid';
 import he from 'he';
 
 const createGenreTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
@@ -235,10 +234,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
     if ((evt.ctrlKey && evt.code === 'Enter')) {
       const scrollPosition = this.element.scrollTop;
       this._callback.commentAdd({
-        id: nanoid(),
-        author: 'Ilya',
         comment: this.element.querySelector('.film-details__comment-input').value,
-        date: humanizeCommentDay(new Date()),
         emotion: this.element.querySelector('.film-details__emoji-item:checked').value
       });
       this.updateElement({emojiSelected: null, typedComment: null});
