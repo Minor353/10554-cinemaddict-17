@@ -158,8 +158,8 @@ export default class FilmPresenter {
       {
         ...this.#card,
         'user_details': {
-          ...this.#card['user_details'],
-          watchlist: !this.#card['user_details'].watchlist
+          ...this.#card.userDetails,
+          watchlist: !this.#card.userDetails.watchlist
         }
       }, this.#comments);
   };
@@ -171,8 +171,8 @@ export default class FilmPresenter {
       {
         ...this.#card,
         'user_details': {
-          ...this.#card['user_details'],
-          history: !this.#card['user_details'].history
+          ...this.#card.userDetails,
+          history: !this.#card.userDetails.history
         }
       }, this.#comments);
   };
@@ -184,8 +184,8 @@ export default class FilmPresenter {
       {
         ...this.#card,
         'user_details': {
-          ...this.#card['user_details'],
-          favorite: !this.#card['user_details'].favorite
+          ...this.#card.userDetails,
+          favorite: !this.#card.userDetails.favorite
         }
       }, this.#comments);
   };

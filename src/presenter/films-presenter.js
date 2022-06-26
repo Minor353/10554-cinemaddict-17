@@ -86,17 +86,6 @@ export default class FilmsPresenter {
       for(let i = 0; i < Math.min(this.films.length, this.#renderFilmCount); i++){
         this.#renderFilmCards(this.films[i], this.#commentsModel, this.#mainFilmsListContainer.element);
       }
-      render(this.#topRatedFilmsList, this.#filmsWrapper.element);
-      render(this.#topRatedFilmsListContainer, this.#topRatedFilmsList.element);
-      /*for(let i = 0; i < Math.min(this.#topRatedFilms.length, RATE_FILM_PER_STEP); i++){
-        this.#renderFilmCards(this.#topRatedFilms[i], this.#filmComments, this.#topRatedFilmsListContainer.element);
-      }*/
-
-      render(this.#mostCommentedFilmsList, this.#filmsWrapper.element);
-      render(this.#mostCommentedFilmsListContainer, this.#mostCommentedFilmsList.element);
-      /*for(let i = 0; i < Math.min(this.#mostCommentedFilms.length, RATE_FILM_PER_STEP); i++){
-        this.#renderFilmCards(this.#mostCommentedFilms[i], this.#filmComments, this.#mostCommentedFilmsListContainer.element);
-      }*/
       if (this.films.length > FILM_COUNT_PER_STEP) {
         this.#renderShowMoreButton();
       }

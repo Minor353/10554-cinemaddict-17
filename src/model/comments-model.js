@@ -3,17 +3,17 @@ import Observable from '../framework/observable';
 
 export default class CommentsModel extends Observable {
   #comments = [];
-  #apiService = null;
+  #filmsApiService = null;
 
-  constructor(apiService) {
+  constructor(filmsApiService) {
     super();
-    this.#apiService = apiService;
+    this.#filmsApiService = filmsApiService;
 
   }
 
   getCommentsById = async (filmId) => {
     try {
-      const comments = await this.#apiService.getComments(filmId);
+      const comments = await this.#filmsApiService.getComments(filmId);
       this.#comments = comments;
     } catch {
       this.#comments = [];
@@ -39,7 +39,7 @@ export default class CommentsModel extends Observable {
     }
 
     try {
-      await this.#apiService.deleteComment(id);
+      await this.#filmsApiService.deleteComment(id);
       this.#comments = [
         ...this.#comments.slice(0, index),
         ...this.#comments.slice(index + 1),
@@ -51,7 +51,7 @@ export default class CommentsModel extends Observable {
 
   addComment = async (filmId, update) => {
     try {
-      const updatedData = await this.#apiService.addComment(filmId, update);
+      const updatedData = await this.#filmsApiService.addComment(filmId, update);
       this.#comments = updatedData.comments;
       return updatedData.movie;
     } catch {

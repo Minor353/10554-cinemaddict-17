@@ -49,12 +49,23 @@ export default class FilmsModel extends Observable {
   #adaptFilmToClient = (film) => {
     const adaptedFilm = {
       ...film,
-      'user_details': {...film['user_details'],
+      userDetails: {...film['user_details'],
         history: film['user_details']['already_watched']
+      },
+      filmInfo: {
+        ...film['film_info'],
+        ageRating: film['film_info']['age_rating'],
+        alternativeTitle: film['film_info']['alternative_title'],
+        totalRating: film['film_info']['total_rating']
       }
     };
 
     delete adaptedFilm['user_details']['already_watched'];
+    delete adaptedFilm['film_info']['age_rating'];
+    delete adaptedFilm['film_info']['alternative_title'];
+    delete adaptedFilm['film_info']['total_rating'];
+    delete adaptedFilm['film_info'];
+    delete adaptedFilm['user_details'];
 
     return adaptedFilm;
   };

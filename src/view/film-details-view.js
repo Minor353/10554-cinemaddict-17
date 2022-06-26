@@ -32,7 +32,7 @@ const setCheckedEmoji = (checkedEmoji, emojiName) => {
 };
 
 const createFilmDetailsTemplate = ({film, comments, emojiSelected, typedComment}) => {
-  const genreTemplate = createGenreTemplate(film.film_info.genre);
+  const genreTemplate = createGenreTemplate(film.filmInfo.genre);
   const commentTemplate = createCommentTemplate(comments);
 
   return (
@@ -45,47 +45,47 @@ const createFilmDetailsTemplate = ({film, comments, emojiSelected, typedComment}
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./${film.film_info.poster}" alt="">
+          <img class="film-details__poster-img" src="./${film.filmInfo.poster}" alt="">
 
-          <p class="film-details__age">${film.film_info.age_rating}+</p>
+          <p class="film-details__age">${film.filmInfo.age_rating}+</p>
         </div>
 
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
-              <h3 class="film-details__title">${film.film_info.title}</h3>
-              <p class="film-details__title-original">${film.film_info.alternative_title}</p>
+              <h3 class="film-details__title">${film.filmInfo.title}</h3>
+              <p class="film-details__title-original">${film.filmInfo.alternativeTitle}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${film.film_info.total_rating}</p>
+              <p class="film-details__total-rating">${film.filmInfo.totalRating}</p>
             </div>
           </div>
 
           <table class="film-details__table">
             <tr class="film-details__row">
               <td class="film-details__term">Director</td>
-              <td class="film-details__cell">${film.film_info.director.toString()}</td>
+              <td class="film-details__cell">${film.filmInfo.director.toString()}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">${film.film_info.writers.toString()}</td>
+              <td class="film-details__cell">${film.filmInfo.writers.toString()}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">${film.film_info.actors.join(', ')}</td>
+              <td class="film-details__cell">${film.filmInfo.actors.join(', ')}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${humanizeReleaseDate(film.film_info.release.date)}</td>
+              <td class="film-details__cell">${humanizeReleaseDate(film.filmInfo.release.date)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${transformIntToHour(film.film_info.runtime)}</td>
+              <td class="film-details__cell">${transformIntToHour(film.filmInfo.runtime)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${film.film_info.release.release_country}</td>
+              <td class="film-details__cell">${film.filmInfo.release.release_country}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
@@ -96,15 +96,15 @@ const createFilmDetailsTemplate = ({film, comments, emojiSelected, typedComment}
           </table>
 
           <p class="film-details__film-description">
-            ${film.film_info.description}
+            ${film.filmInfo.description}
           </p>
         </div>
       </div>
 
       <section class="film-details__controls">
-        <button type="button" class="film-details__control-button film-details__control-button--watchlist ${film['user_details'].watchlist && 'film-details__control-button--active'}" id="watchlist" name="watchlist">Add to watchlist</button>
-        <button type="button" class="film-details__control-button film-details__control-button--watched ${film['user_details'].history && 'film-details__control-button--active'}" id="watched" name="watched">Already watched</button>
-        <button type="button" class="film-details__control-button film-details__control-button--favorite ${film['user_details'].favorite && 'film-details__control-button--active'}" id="favorite" name="favorite">Add to favorites</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watchlist ${film.userDetails.watchlist && 'film-details__control-button--active'}" id="watchlist" name="watchlist">Add to watchlist</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watched ${film.userDetails.history && 'film-details__control-button--active'}" id="watched" name="watched">Already watched</button>
+        <button type="button" class="film-details__control-button film-details__control-button--favorite ${film.userDetails.favorite && 'film-details__control-button--active'}" id="favorite" name="favorite">Add to favorites</button>
       </section>
     </div>
 

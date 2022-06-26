@@ -54,13 +54,23 @@ export default class FilmsApiService extends ApiService {
   #adaptFilmToServer = (film) => {
     const adaptedFilm = {
       ...film,
-      'user_details': {...film['user_details'],
-        'already_watched': film['user_details'].history
+      'user_details': {...film.userDetails,
+        'already_watched': film.userDetails.history
+      },
+      ['film_info']: {
+        ...film.filmInfo,
+        ['age_rating']: film.filmInfo.ageRating,
+        ['alternative_title']: film.filmInfo.alternativeTitle,
+        ['total_rating']: film.filmInfo.totalRating
       }
     };
 
-    delete adaptedFilm['user_details'].history;
-
+    delete adaptedFilm.user_details.history;
+    delete adaptedFilm.userDetails;
+    delete adaptedFilm.film_info.ageRating;
+    delete adaptedFilm.film_info.alternativeTitle;
+    delete adaptedFilm.film_info.totalRating;
+    delete adaptedFilm.filmInfo;
     return adaptedFilm;
   };
 }
